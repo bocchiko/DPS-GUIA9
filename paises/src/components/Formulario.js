@@ -1,26 +1,35 @@
-import React, {useState} from "react";
-import {Text, TextInput, View, StyleSheet, TouchableWithoutFeedback, Animated} from "react-native";
+import {useState} from "react";
+import {Text, View, StyleSheet, TouchableWithoutFeedback, Alert} from "react-native";
 import {Picker} from "@react-native-picker/picker";
+const Formulario = ({ busqueda, guardarBusqueda, guardarConsultar }) => {
+    const { pais } = busqueda;
+    const [selectedCountry, setSelectedCountry] = useState();
 
-const Formulario = ({busqueda, guardarbusqueda}) => {
-    const {pais} = busqueda;
-    const [selectedCountry, setSelectedConutry] = useState();
+    const consultarPais = () => {
+        if (pais.trim() === '') {
+            mostrarAlerta();
+            return;
+        }
+        guardarConsultar(true);
+    }
+
+    const mostrarAlerta = () => {
+        Alert.alert('Error', 'Debe de seleccionar un pais', [{ text: 'Entendido' }]);
+    }
 
     return (
         <>
             <View>
                 <View>
-                    <Text style={styles.input}>Pais</Text>
+                    <Text style={styles.input}>País</Text>
                 </View>
                 <View>
-                    <Picker 
+                    <Picker
                         style={styles.itempais}
-                        selectedValue={selectedCountry}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedConutry(itemValue)
-                        }
+                        selectedValue={pais}
+                        onValueChange={pais => guardarBusqueda({ ...busqueda, pais })}
                     >
-                        <Picker.Item label="--seleccione un pais--" value="" />
+                        <Picker.Item label="" value="" />
                         <Picker.Item label="Canada" value="ca" />
                         <Picker.Item label="El Salvador" value="sv" />
                         <Picker.Item label="Guatemala" value="gt" />
@@ -33,18 +42,17 @@ const Formulario = ({busqueda, guardarbusqueda}) => {
                         <Picker.Item label="Estados Unidos" value="us" />
                         <Picker.Item label="Colombia" value="co" />
                         <Picker.Item label="España" value="es" />
-                        <Picker.Item label="Peru" value="pe" />
+                        <Picker.Item label="Perú" value="pe" />
                     </Picker>
+                    <TouchableWithoutFeedback onPress={() => consultarPais()}>
+                        <View style={styles.btnBuscar}>
+                            <Text style={styles.textoBuscar}>Buscar País</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
-                <TouchableWithoutFeedback>
-                    <View style={styles.btnBuscar}>
-                        <Text style={styles.textoBuscar}>Buscar Pais</Text>
-                    </View>
-                </TouchableWithoutFeedback>
             </View>
         </>
     );
-
 };
 
 const styles = StyleSheet.create({
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
     },
     itempais: {
         height: 60,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
     },
     btnBuscar: {
         marginTop: 50,
@@ -67,14 +75,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginBottom: 20,
         textAlign: "center",
-        fontSize: 18
     },
     textoBuscar: {
         color: "#fff",
         fontWeight: "bold",
         textTransform: "uppercase",
         textAlign: "center",
-        fontSize: 18
+        fontSize: 18,
     },
 });
 
