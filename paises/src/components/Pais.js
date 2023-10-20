@@ -8,6 +8,8 @@ const Pais = ({ resultado }) => {
     const [capital, setCapital] = useState();
     const [region, setRegion] = useState();
     const [lengua, setLengua] = useState([]);
+    const [km2, setKm2] = useState([]);
+    const [bandera, setBandera] = useState("");
 
     useEffect(() => {
         setInfo(resultado);
@@ -16,10 +18,12 @@ const Pais = ({ resultado }) => {
             setNombre(item.nome.abreviado);
             setCapital(item.governo.capital.nome);
             setRegion(item.localizacao.regiao.nome);
+            setKm2(`${item.area.total} ${item.area.unidade.símbolo}`);
 
             Object.values(item.linguas).map((item) => {
                 lengua.push(item.nome);
             });
+        
         });
     }, [resultado]);
 
@@ -31,6 +35,7 @@ const Pais = ({ resultado }) => {
                 <Text>Capital: {capital}</Text>
                 <Text>Region: {region}</Text>
                 <Text>Lenguas: {lengua.toString()}</Text>
+                <Text>Kilómetros Cuadrados: {km2}</Text>
             </View>
         </Card>
     );
